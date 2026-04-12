@@ -10,6 +10,5 @@ An optional client-side mod for playnimbus.net that enables extra features!
 
 ### Planned Nimnite Features
 
-
 - Lag Compensation (gonna be a pita)
 - Mod Compatability (disables incompatible mods like ImmediatelyFast)
