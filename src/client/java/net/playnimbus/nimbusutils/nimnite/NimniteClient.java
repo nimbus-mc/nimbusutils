@@ -31,7 +31,7 @@ public class NimniteClient {
             rightClickHeld.set(isRightHeld);
             leftClickHeld.set(isLeftHeld);
 
-            if (client.interactionManager != null && isLeftHeld) {
+            if (client.interactionManager != null && isLeftHeld && holdingGun) {
                 client.interactionManager.interactItem(client.player, Hand.MAIN_HAND);
             }
         }
