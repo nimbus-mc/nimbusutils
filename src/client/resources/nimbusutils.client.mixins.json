@@ -1,8 +1,13 @@
 {
 	"required": true,
-	"package": "net.playnimbus.mixin.client",
+	"package": "net.playnimbus.nimbusutils.mixin.client",
 	"compatibilityLevel": "JAVA_21",
-	"client": [],
+	"client": [
+		"HotbarChangeMixin",
+		"MinecraftClientMixin",
+		"NimniteAimingMixin",
+		"NimniteShootingMixin"
+	],
 	"injectors": {
 		"defaultRequire": 1
 	}

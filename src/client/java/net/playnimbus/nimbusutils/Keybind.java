@@ -1,9 +1,8 @@
-package net.playnimbus.keybinds;
+package net.playnimbus.nimbusutils;
 
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
-import net.playnimbus.NimbusUtilsClient;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +14,7 @@ public record Keybind(KeyBinding keybind, BiFunction<Keybind, MinecraftClient, B
 	public void register() {
 		KeyBindingHelper.registerKeyBinding(keybind());
 		REGISTRY.put(keybind.getId(), this);
-	};
+	}
 
 	/**
 	 * this gets ran at the end of the client's tick
@@ -27,8 +26,6 @@ public record Keybind(KeyBinding keybind, BiFunction<Keybind, MinecraftClient, B
 	}
 
 	public static void tickAll(MinecraftClient client) {
-		REGISTRY.forEach((i, k) -> {
-			k.tick(client);
-		});
+		REGISTRY.forEach((i, k) -> k.tick(client));
 	}
 }

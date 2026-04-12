@@ -1,4 +1,4 @@
-package net.playnimbus;
+package net.playnimbus.nimbusutils;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -6,17 +6,20 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.client.MinecraftClient;
-import net.playnimbus.keybinds.Keybind;
-import net.playnimbus.keybinds.NimniteKeybinds;
-import net.playnimbus.networking.HandshakePayload;
-import net.playnimbus.networking.HandshakeState;
-import net.playnimbus.networking.KeybindPayload;
+import net.playnimbus.NimbusUtils;
+import net.playnimbus.nimbusutils.nimnite.NimniteClient;
+import net.playnimbus.nimbusutils.nimnite.NimniteKeybinds;
+import net.playnimbus.nimbusutils.networking.HandshakePayload;
+import net.playnimbus.nimbusutils.networking.HandshakeState;
+import net.playnimbus.nimbusutils.networking.KeybindPayload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class NimbusUtilsClient implements ClientModInitializer {
-	private static Logger LOGGER = LoggerFactory.getLogger(NimbusUtils.MOD_ID);
-	public static boolean ENABLED = false;
+	private static final Logger LOGGER = LoggerFactory.getLogger(NimbusUtils.MOD_ID);
+	public static HandshakeState STATE = HandshakeState.NONE;
+
+	public static NimniteClient NIMNITE = new NimniteClient();
 
 	@Override
 	public void onInitializeClient() {
@@ -31,29 +34,32 @@ public class NimbusUtilsClient implements ClientModInitializer {
 
 			client.execute(() -> {
 				HandshakeState state = HandshakeState.getFromState(payload.state());
+				STATE = state;
 
-				if (state == HandshakeState.SUCCESS) {
-					ENABLED = true;
+				switch (state) {
+					case NIMNITE -> NIMNITE.setEnabled(true);
 				}
 
-				LOGGER.info("handshake received: {}", ENABLED);
+				LOGGER.info("handshake received: {}", state);
 			});
 		});
 
 		// send handshake packet on server join
 		ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
-			HandshakePayload handshake = new HandshakePayload(HandshakeState.JOINED.getState());
-
+			HandshakePayload handshake = new HandshakePayload(HandshakeState.CONNECTING.getState());
 			ClientPlayNetworking.send(handshake);
 		});
 
 		// disable NimbusUtils on disconnect
 		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
-			if (ENABLED) ENABLED = false;
+			STATE = HandshakeState.NONE;
+
+			NIMNITE.setEnabled(false);
 		});
 
-		// register keybinds
+		// register everything
 		NimniteKeybinds.registerAll();
 		ClientTickEvents.END_CLIENT_TICK.register(Keybind::tickAll);
+		ClientTickEvents.END_CLIENT_TICK.register(NIMNITE::tick);
 	}
 }

@@ -4,5 +4,6 @@
   "key.nimnite.tile_floor": "Floor",
   "key.nimnite.tile_stair": "Stairs",
   "key.nimnite.tile_pyramid": "Pyramid",
-  "key.nimnite.tile_trap": "Trap"
+  "key.nimnite.tile_trap": "Trap",
+  "key.nimnite.reload": "Reload"
 }

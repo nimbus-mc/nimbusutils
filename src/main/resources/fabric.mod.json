@@ -11,7 +11,7 @@
 		"homepage": "https://playnimbus.net/",
 		"sources": "https://github.com/nimbus-mc/NimbusUtils"
 	},
-	"license": "GPL-3.0",
+	"license": "MIT",
 	"icon": "assets/nimbusutils/icon.png",
 	"environment": "*",
 	"entrypoints": {
@@ -19,7 +19,7 @@
 			"net.playnimbus.NimbusUtils"
 		],
 		"client": [
-			"net.playnimbus.NimbusUtilsClient"
+          "net.playnimbus.nimbusutils.NimbusUtilsClient"
 		]
 	},
 	"mixins": [

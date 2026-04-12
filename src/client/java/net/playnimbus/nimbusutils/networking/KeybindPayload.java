@@ -1,4 +1,4 @@
-package net.playnimbus.networking;
+package net.playnimbus.nimbusutils.networking;
 
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;

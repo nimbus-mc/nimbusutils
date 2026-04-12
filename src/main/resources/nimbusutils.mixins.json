@@ -1,6 +1,6 @@
 {
 	"required": true,
-	"package": "net.playnimbus.mixin",
+	"package": "net.playnimbus.nimbusutils.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [],
 	"injectors": {
