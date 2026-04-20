@@ -1,5 +1,10 @@
 {
-  "key.category.nimbusutils.nimnite": "Nimnite",
+  "title.nimbusutils.config": "NimbusUtils",
+  "category.nimbusutils.nimnite": "Nimnite",
+  "setting.nimnite.toggleads": "Toggle ADS",
+  "setting.nimnite.toggleads.tooltip": "Default: Hold ADS",
+  "setting.nimbusutils.enabled": "Enabled",
+  "setting.nimbusutils.enabled.tooltip": "Use NimbusUtils features?",
   "key.nimnite.tile_wall": "Wall",
   "key.nimnite.tile_floor": "Floor",
   "key.nimnite.tile_stair": "Stairs",

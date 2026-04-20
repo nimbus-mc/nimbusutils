@@ -7,6 +7,7 @@ An optional client-side mod for playnimbus.net that enables extra features!
 - Build Mode Keybinds
 - Left Click Shooting
 - Right Click ADS
+- Toggle ADS
 
 ### Planned Nimnite Features
 

@@ -1,5 +1,7 @@
 package net.playnimbus.nimbusutils;
 
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -21,8 +23,14 @@ public class NimbusUtilsClient implements ClientModInitializer {
 
 	public static NimniteClient NIMNITE = new NimniteClient();
 
+	public static ModConfig CONFIG;
+
 	@Override
 	public void onInitializeClient() {
+		// register and acquire config
+		AutoConfig.register(ModConfig.class, GsonConfigSerializer::new);
+		CONFIG = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
+
 		// register packets
 		PayloadTypeRegistry.playC2S().register(HandshakePayload.ID, HandshakePayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(HandshakePayload.ID, HandshakePayload.CODEC);

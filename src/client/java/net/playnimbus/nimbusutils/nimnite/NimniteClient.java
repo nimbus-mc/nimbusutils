@@ -7,13 +7,13 @@ import net.playnimbus.NimbusUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static net.playnimbus.nimbusutils.nimnite.NimniteKeybinds.leftClickHeld;
-import static net.playnimbus.nimbusutils.nimnite.NimniteKeybinds.rightClickHeld;
+import static net.playnimbus.nimbusutils.nimnite.NimniteKeybinds.*;
 
 public class NimniteClient {
     private final static Logger LOGGER = LoggerFactory.getLogger(NimbusUtils.MOD_ID);
     private boolean enabled = false;
     private boolean holdingGun = false;
+    private boolean ads = false;
 
     public NimniteClient() {
 //        HotbarChangeEvent.EVENT.register(this::onHotbarChange);
@@ -51,5 +51,7 @@ public class NimniteClient {
         return this.holdingGun;
     }
 
-    public boolean isEnabled() { return enabled; }
+    public boolean isEnabled() {
+        return enabled;
+    }
 }

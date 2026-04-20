@@ -20,6 +20,9 @@
 		],
 		"client": [
           "net.playnimbus.nimbusutils.NimbusUtilsClient"
+		],
+		"modmenu": [
+			"net.playnimbus.nimbusutils.ModMenuImplementation"
 		]
 	},
 	"mixins": [
