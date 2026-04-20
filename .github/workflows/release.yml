@@ -28,7 +28,7 @@ jobs:
       - name: Publish to Modrinth
         uses: Kir-Antipov/mc-publish@v3
         with:
-          modrinth-id: nimbusutils
+          modrinth-id: 4D8bhjBH
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
 
           files: |
