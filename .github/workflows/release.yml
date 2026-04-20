@@ -2,7 +2,7 @@ name: Release Mod
 
 on:
   release:
-    types: [published]
+    types: [ published ]
 
 jobs:
   publish:
