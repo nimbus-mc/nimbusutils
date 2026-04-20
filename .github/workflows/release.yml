@@ -1,25 +1,23 @@
-name: release
+name: Release Mod
 
 on:
   release:
     types: [published]
 
 jobs:
-  build-and-publish:
+  publish:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Set up Java
-        uses: actions/setup-java@v3
+      - uses: actions/setup-java@v3
         with:
           distribution: temurin
           java-version: 25
 
-      - name: Make Gradle executable
-        run: chmod +x ./gradlew
+      - run: chmod +x ./gradlew
+      - run: ./gradlew build
 
       - name: Read Minecraft version
         id: mc_version
@@ -27,37 +25,19 @@ jobs:
           MC_VERSION=$(grep '^minecraft_version=' gradle.properties | cut -d'=' -f2)
           echo "mc_version=$MC_VERSION" >> $GITHUB_OUTPUT
 
-      - name: Set version type
-        id: version_type
-        run: |
-          if [[ "${{ github.event.release.prerelease }}" == "true" ]]; then
-            echo "type=beta" >> $GITHUB_OUTPUT
-          else
-            echo "type=release" >> $GITHUB_OUTPUT
-          fi
+      - name: Publish to Modrinth
+        uses: Kir-Antipov/mc-publish@v3
+        with:
+          modrinth-id: nimbusutils
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
 
-      - name: Build mod
-        run: ./gradlew build
+          files: |
+            build/libs/*[!sources].jar
 
-      - name: Find JAR
-        id: jar
-        run: |
-          FILE=$(ls build/libs/nimbusutils*.jar | head -n 1)
-          echo "file=$FILE" >> $GITHUB_OUTPUT
+          name: ${{ github.event.release.name }}
+          version: ${{ github.ref_name }}
 
-      - name: Upload to Modrinth
-        run: |
-          VERSION=${GITHUB_REF_NAME}
+          game-versions: ${{ steps.mc_version.outputs.mc_version }}
+          loaders: fabric
 
-          curl -X POST https://api.modrinth.com/v2/version \
-          -H "Authorization: ${{ secrets.MODRINTH_TOKEN }}" \
-          -H "Content-Type: multipart/form-data" \
-          -F "data={
-            \"name\": \"$VERSION\",
-            \"version_number\": \"$VERSION\",
-            \"project_id\": \"YOUR_PROJECT_ID\",
-            \"game_versions\": [\"${{ steps.mc_version.outputs.mc_version }}\"],
-            \"loaders\": [\"fabric\"],
-            \"status\": \"listed\"
-          }" \
-          -F "file=@${{ steps.jar.outputs.file }}"
+          version-type: ${{ github.event.release.prerelease && 'beta' || 'release' }}
