@@ -2,7 +2,10 @@ package net.playnimbus.nimbusutils.mixin.client;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.playnimbus.NimbusUtils;
+import net.playnimbus.nimbusutils.events.SwapHandsEvent;
 import net.playnimbus.nimbusutils.nimnite.NimniteKeybinds;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
@@ -41,6 +44,20 @@ public abstract class MinecraftClientMixin {
         if (NIMNITE.isEnabled() && NIMNITE.isHoldingGun() && NimniteKeybinds.adsActive.get()) {
             LOGGER.info("cancelled");
             ci.cancel();
+        }
+    }
+
+    @Inject(method = "handleInputEvents", at = @At("HEAD"))
+    private void disableGunOnSwap(CallbackInfo ci) {
+        MinecraftClient client = MinecraftClient.getInstance();
+        if (client.options.swapHandsKey.isPressed()) {
+            // The swap hands key was just pressed
+            ClientPlayerEntity player = client.player;
+            if (player != null) {
+                ItemStack mainHand = player.getMainHandStack();
+                ItemStack offHand = player.getOffHandStack();
+                SwapHandsEvent.EVENT.invoker().onSwapHands(player, mainHand, offHand);
+            }
         }
     }
 

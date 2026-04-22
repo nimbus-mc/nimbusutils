@@ -2,7 +2,9 @@ package net.playnimbus.nimbusutils.nimnite;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.event.player.ItemEvents;
+import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -16,6 +18,7 @@ import net.playnimbus.NimbusUtils;
 import net.playnimbus.nimbusutils.ModConfig;
 import net.playnimbus.nimbusutils.NimbusUtilsClient;
 import net.playnimbus.nimbusutils.events.HotbarChangeEvent;
+import net.playnimbus.nimbusutils.events.SwapHandsEvent;
 import net.playnimbus.nimbusutils.mixin.client.MinecraftClientAccessor;
 import net.playnimbus.nimbusutils.mixin.client.SendSequencedPacketAccessor;
 import org.slf4j.Logger;
@@ -30,25 +33,37 @@ public class NimniteClient {
     private final static Logger LOGGER = LoggerFactory.getLogger(NimbusUtils.MOD_ID);
     private boolean enabled = false;
     private boolean holdingGun = false;
-    private boolean canShoot = false;
     private boolean lastLeftHeld = false;
     private boolean shouldShoot = false;
     private boolean lastShouldShoot = false;
-    private AtomicBoolean threadActive = new AtomicBoolean(false);
 
     public NimniteClient() {
         HotbarChangeEvent.EVENT.register(this::onHotbarChange);
+        SwapHandsEvent.EVENT.register(this::onSwapHands);
+
         ClientTickEvents.END_CLIENT_TICK.register(this::tick);
+    }
+
+    public boolean isItemAGun(ItemStack item) {
+        var customData = item.get(DataComponentTypes.CUSTOM_DATA);
+        if (customData != null) {
+            var nbt = customData.copyNbt();
+            return nbt.getBoolean("fort:item/is_gun", false);
+        }
+
+        return false;
     }
 
     private void onHotbarChange(PlayerEntity player, int oldSlot, int newSlot) {
         if (!isEnabled()) return;
         ItemStack stack = player.getInventory().getStack(newSlot);
 
-        var customData = stack.get(DataComponentTypes.CUSTOM_DATA);
-        if (customData != null) {
-            var nbt = customData.copyNbt();
-            this.setHoldingGun(nbt.getBoolean("fort:item/is_gun", false));
+        this.setHoldingGun(isItemAGun(stack));
+    }
+
+    private void onSwapHands(ClientPlayerEntity player, ItemStack mainHand, ItemStack offHand) {
+        if (isEnabled()) {
+            this.setHoldingGun(isItemAGun(mainHand));
         }
     }
 
@@ -84,15 +99,6 @@ public class NimniteClient {
 //        LOGGER.info("tick | isLeftHeld={} isRightHeld={} risingEdge={} shouldShoot={} sending={}",
 //                isLeftHeld, isRightHeld, risingEdge, shouldShoot, shouldShoot);
     }
-
-    public boolean canShoot() {
-        return canShoot;
-    }
-
-    public void setCanShoot(boolean canShoot) {
-        this.canShoot = canShoot;
-    }
-
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
