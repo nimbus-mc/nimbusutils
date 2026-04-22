@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 
 public class NimbusUtilsClient implements ClientModInitializer {
 	private static final Logger LOGGER = LoggerFactory.getLogger(NimbusUtils.MOD_ID);
+	private static boolean serverEnabled = false;
 	public static HandshakeState STATE = HandshakeState.NONE;
 
 	public static NimniteClient NIMNITE = new NimniteClient();
@@ -37,11 +38,12 @@ public class NimbusUtilsClient implements ClientModInitializer {
 		PayloadTypeRegistry.playC2S().register(KeybindPacket.ID, KeybindPacket.CODEC);
 
 		// handle incoming handshake packet
-		ClientPlayNetworking.registerGlobalReceiver(HandshakePacket.ID, (payload, ctx) -> {
+		ClientPlayNetworking.registerGlobalReceiver(HandshakePacket.ID, (packet, ctx) -> {
 			MinecraftClient client = ctx.client();
 
 			client.execute(() -> {
-				HandshakeState state = HandshakeState.getFromState(payload.state());
+				HandshakeState state = HandshakeState.getFromState(packet.state());
+				serverEnabled = packet.enabled();
 				STATE = state;
 
 				switch (state) {
@@ -69,5 +71,9 @@ public class NimbusUtilsClient implements ClientModInitializer {
 		NimniteKeybinds.registerAll();
 		ClientTickEvents.END_CLIENT_TICK.register(Keybind::tickAll);
 		ClientTickEvents.END_CLIENT_TICK.register(NIMNITE::tick);
+	}
+
+	public static boolean isEnabled() {
+		return serverEnabled && CONFIG.modEnabled;
 	}
 }

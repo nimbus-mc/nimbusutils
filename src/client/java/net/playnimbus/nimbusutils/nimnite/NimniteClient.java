@@ -108,6 +108,6 @@ public class NimniteClient {
     }
 
     public boolean isEnabled() {
-        return NimbusUtilsClient.CONFIG.modEnabled && enabled;
+        return NimbusUtilsClient.isEnabled() && enabled;
     }
 }
