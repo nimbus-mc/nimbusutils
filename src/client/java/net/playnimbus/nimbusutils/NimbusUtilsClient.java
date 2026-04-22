@@ -11,9 +11,9 @@ import net.minecraft.client.MinecraftClient;
 import net.playnimbus.NimbusUtils;
 import net.playnimbus.nimbusutils.nimnite.NimniteClient;
 import net.playnimbus.nimbusutils.nimnite.NimniteKeybinds;
-import net.playnimbus.nimbusutils.networking.HandshakePayload;
+import net.playnimbus.nimbusutils.networking.HandshakePacket;
 import net.playnimbus.nimbusutils.networking.HandshakeState;
-import net.playnimbus.nimbusutils.networking.KeybindPayload;
+import net.playnimbus.nimbusutils.networking.KeybindPacket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,12 +32,12 @@ public class NimbusUtilsClient implements ClientModInitializer {
 		CONFIG = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
 
 		// register packets
-		PayloadTypeRegistry.playC2S().register(HandshakePayload.ID, HandshakePayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(HandshakePayload.ID, HandshakePayload.CODEC);
-		PayloadTypeRegistry.playC2S().register(KeybindPayload.ID, KeybindPayload.CODEC);
+		PayloadTypeRegistry.playC2S().register(HandshakePacket.ID, HandshakePacket.CODEC);
+		PayloadTypeRegistry.playS2C().register(HandshakePacket.ID, HandshakePacket.CODEC);
+		PayloadTypeRegistry.playC2S().register(KeybindPacket.ID, KeybindPacket.CODEC);
 
 		// handle incoming handshake packet
-		ClientPlayNetworking.registerGlobalReceiver(HandshakePayload.ID, (payload, ctx) -> {
+		ClientPlayNetworking.registerGlobalReceiver(HandshakePacket.ID, (payload, ctx) -> {
 			MinecraftClient client = ctx.client();
 
 			client.execute(() -> {
@@ -54,7 +54,7 @@ public class NimbusUtilsClient implements ClientModInitializer {
 
 		// send handshake packet on server join
 		ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
-			HandshakePayload handshake = new HandshakePayload(HandshakeState.CONNECTING.getState());
+			HandshakePacket handshake = new HandshakePacket(HandshakeState.CONNECTING.getState(), CONFIG.modEnabled);
 			ClientPlayNetworking.send(handshake);
 		});
 

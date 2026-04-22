@@ -8,7 +8,7 @@ import net.minecraft.util.Identifier;
 import net.playnimbus.NimbusUtils;
 import net.playnimbus.nimbusutils.NimbusUtilsClient;
 import net.playnimbus.nimbusutils.Keybind;
-import net.playnimbus.nimbusutils.networking.KeybindPayload;
+import net.playnimbus.nimbusutils.networking.KeybindPacket;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -30,7 +30,7 @@ public class NimniteKeybinds {
 	private static boolean onKeybindPressed(Keybind k, MinecraftClient client) {
 		if (!NimbusUtilsClient.STATE.isInAGame()) return false;
 
-		var payload = new KeybindPayload(k.keybind().getId());
+		var payload = new KeybindPacket(k.keybind().getId());
 		ClientPlayNetworking.send(payload);
 
 		return true;
