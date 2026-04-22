@@ -17,6 +17,7 @@ public class NimniteKeybinds {
 	private static final KeyBinding.Category CATEGORY = new KeyBinding.Category(Identifier.of(NimbusUtils.MOD_ID, "nimnite"));
 	protected static final AtomicBoolean rightClickHeld = new AtomicBoolean(false);
 	protected static final AtomicBoolean leftClickHeld = new AtomicBoolean(false);
+	public static final AtomicBoolean adsActive = new AtomicBoolean(false);
 
 	public static final Keybind GUN_RELOAD = new Keybind(new KeyBinding("key.nimnite.reload", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_R, CATEGORY), NimniteKeybinds::onKeybindPressed);
 

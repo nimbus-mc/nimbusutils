@@ -3,10 +3,12 @@
 	"package": "net.playnimbus.nimbusutils.mixin.client",
 	"compatibilityLevel": "JAVA_21",
 	"client": [
+		"ClientPlayerEntityMixin",
 		"HotbarChangeMixin",
+		"MinecraftClientAccessor",
 		"MinecraftClientMixin",
 		"NimniteAimingMixin",
-		"NimniteShootingMixin"
+		"SendSequencedPacketAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1

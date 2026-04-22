@@ -30,7 +30,7 @@ public class ModMenuImplementation implements ModMenuApi {
                                     .build())
                     ;
 
-            builder.getOrCreateCategory(Text.translatable("category.nimbusutils.nimnite"))
+            builder.getOrCreateCategory(Text.translatable("key.category.nimbusutils.nimnite"))
                     .addEntry(entryBuilder.startBooleanToggle(Text.translatable("setting.nimnite.toggleads"), CONFIG.toggleADS)
                             .setDefaultValue(false)
                             .setTooltip(Text.translatable("setting.nimnite.toggleads.tooltip"))

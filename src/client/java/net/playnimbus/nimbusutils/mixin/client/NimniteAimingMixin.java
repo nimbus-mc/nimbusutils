@@ -9,6 +9,7 @@ import net.playnimbus.nimbusutils.nimnite.NimniteKeybinds;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -16,15 +17,14 @@ import java.util.Objects;
 
 import static net.playnimbus.nimbusutils.NimbusUtilsClient.CONFIG;
 import static net.playnimbus.nimbusutils.NimbusUtilsClient.NIMNITE;
+import static net.playnimbus.nimbusutils.nimnite.NimniteKeybinds.adsActive;
 
 @Mixin(ClientPlayerEntity.class)
 public abstract class NimniteAimingMixin {
 
     @Shadow public Input input;
     @Final @Shadow protected MinecraftClient client;
-
-    private boolean adsActive = false;
-    private boolean lastRightClick = false;
+    @Unique private boolean lastRightClick = false;
 
     @Inject(method = "tickMovement", at = @At("HEAD"))
     private void forceSneak(CallbackInfo ci) {
@@ -33,23 +33,20 @@ public abstract class NimniteAimingMixin {
         boolean rightClick = NimniteKeybinds.isRightClickHeld();
 
         if (CONFIG.toggleADS) {
-
-            // detect click edge (press event)
             if (rightClick && !lastRightClick) {
-                adsActive = !adsActive;
+                adsActive.set(!adsActive.get());
             }
-
             lastRightClick = rightClick;
-
-        } else {
-            // HOLD MODE
-            adsActive = rightClick;
+        } else { // hold ads
+            adsActive.set(rightClick);
         }
 
         boolean shouldSneak =
                 NIMNITE.isHoldingGun() &&
-                        adsActive;
+                        adsActive.get();
 
+        // todo: maybe find a different way of doing this
+        // modify player input to force players sneak state.
         var pi = input.playerInput;
         if (shouldSneak) {
             client.options.sneakKey.setPressed(true);

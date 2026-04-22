@@ -1,6 +1,6 @@
 {
   "title.nimbusutils.config": "NimbusUtils",
-  "category.nimbusutils.nimnite": "Nimnite",
+  "key.category.nimbusutils.nimnite": "Nimnite",
   "setting.nimnite.toggleads": "Toggle ADS",
   "setting.nimnite.toggleads.tooltip": "Default: Hold ADS",
   "setting.nimbusutils.enabled": "Enabled",
