@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
 
 public class NimbusUtilsClient implements ClientModInitializer {
 	private static final Logger LOGGER = LoggerFactory.getLogger(NimbusUtils.MOD_ID);
-	private static boolean serverEnabled = false;
 	public static HandshakeState STATE = HandshakeState.NONE;
 
 	public static NimniteClient NIMNITE = new NimniteClient();
@@ -43,7 +42,6 @@ public class NimbusUtilsClient implements ClientModInitializer {
 
 			client.execute(() -> {
 				HandshakeState state = HandshakeState.getFromState(packet.state());
-				serverEnabled = packet.enabled();
 				STATE = state;
 
 				switch (state) {
@@ -56,7 +54,7 @@ public class NimbusUtilsClient implements ClientModInitializer {
 
 		// send handshake packet on server join
 		ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
-			HandshakePacket handshake = new HandshakePacket(HandshakeState.CONNECTING.getState(), CONFIG.modEnabled);
+			HandshakePacket handshake = new HandshakePacket(HandshakeState.CONNECTING.getState());
 			ClientPlayNetworking.send(handshake);
 		});
 
@@ -74,6 +72,6 @@ public class NimbusUtilsClient implements ClientModInitializer {
 	}
 
 	public static boolean isEnabled() {
-		return serverEnabled && CONFIG.modEnabled;
+		return CONFIG.modEnabled;
 	}
 }
