@@ -5,7 +5,7 @@ import net.minecraft.client.input.Input;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.network.packet.c2s.play.PlayerInputC2SPacket;
 import net.minecraft.util.PlayerInput;
-import net.playnimbus.nimbusutils.nimnite.NimniteKeybinds;
+import net.playnimbus.nimbusutils.modules.nimnite.NimniteKeybinds;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -17,7 +17,7 @@ import java.util.Objects;
 
 import static net.playnimbus.nimbusutils.NimbusUtilsClient.CONFIG;
 import static net.playnimbus.nimbusutils.NimbusUtilsClient.NIMNITE;
-import static net.playnimbus.nimbusutils.nimnite.NimniteKeybinds.adsActive;
+import static net.playnimbus.nimbusutils.modules.nimnite.NimniteKeybinds.adsActive;
 
 @Mixin(ClientPlayerEntity.class)
 public abstract class NimniteAimingMixin {

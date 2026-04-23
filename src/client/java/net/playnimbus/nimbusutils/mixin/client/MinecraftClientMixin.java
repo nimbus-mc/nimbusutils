@@ -6,7 +6,7 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.playnimbus.NimbusUtils;
 import net.playnimbus.nimbusutils.events.SwapHandsEvent;
-import net.playnimbus.nimbusutils.nimnite.NimniteKeybinds;
+import net.playnimbus.nimbusutils.modules.nimnite.NimniteKeybinds;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

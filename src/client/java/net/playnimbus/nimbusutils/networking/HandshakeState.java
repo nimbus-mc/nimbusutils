@@ -1,30 +1,25 @@
 package net.playnimbus.nimbusutils.networking;
 
 public enum HandshakeState {
-	NONE((byte) 0, "none"),
-	CONNECTING((byte) 1, "connecting"),
-	HUB((byte) 2, "hub"),
-	NIMNITE((byte) 3, "nimnite"),
+	NONE((byte) 0),
+	CONNECTING((byte) 1),
+	CONNECTED((byte) 2)
 	;
 
 	private final byte state;
-	private final String name;
 
-	HandshakeState(byte state, String name) {
+	HandshakeState(byte state) {
 		this.state = state;
-		this.name = name;
 	}
+
+	public static final HandshakeState[] VALUES = values();
 
 	public byte getState() {
 		return state;
 	}
 
-	public String getName() {
-		return name;
-	}
-
 	public static HandshakeState getFromState(byte state) throws IllegalArgumentException {
-		for (HandshakeState s : HandshakeState.values()) {
+		for (HandshakeState s : VALUES) {
 			if (s.getState() == state) {
 				return s;
 			}
@@ -33,24 +28,7 @@ public enum HandshakeState {
 		throw new IllegalArgumentException("Invalid handshake state");
 	}
 
-	public static HandshakeState getFromName(String name) throws IllegalArgumentException {
-		for (HandshakeState s : HandshakeState.values()) {
-			if (s.getName().equals(name)) {
-				return s;
-			}
-		}
-
-		throw new IllegalArgumentException("Invalid handshake name");
-	}
-
-	public boolean isInAGame() {
-		switch (this) {
-			case NIMNITE -> {
-				return true;
-			}
-			default -> {
-				return false;
-			}
-		}
+	public boolean isConnected() {
+		return this == CONNECTED;
 	}
 }

@@ -1,9 +1,8 @@
 package net.playnimbus.nimbusutils.mixin.client;
 
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.playnimbus.nimbusutils.nimnite.NimniteKeybinds;
+import net.playnimbus.nimbusutils.modules.nimnite.NimniteKeybinds;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;

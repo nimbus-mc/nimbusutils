@@ -1,4 +1,4 @@
-package net.playnimbus.nimbusutils;
+package net.playnimbus.nimbusutils.networking;
 
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;

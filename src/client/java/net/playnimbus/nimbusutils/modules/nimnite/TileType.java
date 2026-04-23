@@ -1,4 +1,4 @@
-package net.playnimbus.nimbusutils.nimnite;
+package net.playnimbus.nimbusutils.modules.nimnite;
 
 public enum TileType {
 	WALL("key.nimnite.tile_wall"),

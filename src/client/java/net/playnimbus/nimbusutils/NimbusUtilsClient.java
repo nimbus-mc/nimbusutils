@@ -9,10 +9,11 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.client.MinecraftClient;
 import net.playnimbus.NimbusUtils;
-import net.playnimbus.nimbusutils.nimnite.NimniteClient;
-import net.playnimbus.nimbusutils.nimnite.NimniteKeybinds;
+import net.playnimbus.nimbusutils.modules.nimnite.NimniteClient;
+import net.playnimbus.nimbusutils.modules.nimnite.NimniteKeybinds;
 import net.playnimbus.nimbusutils.networking.HandshakePacket;
 import net.playnimbus.nimbusutils.networking.HandshakeState;
+import net.playnimbus.nimbusutils.networking.Keybind;
 import net.playnimbus.nimbusutils.networking.KeybindPacket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,7 @@ import org.slf4j.LoggerFactory;
 public class NimbusUtilsClient implements ClientModInitializer {
 	private static final Logger LOGGER = LoggerFactory.getLogger(NimbusUtils.MOD_ID);
 	public static HandshakeState STATE = HandshakeState.NONE;
+	public static byte SERVERTYPE = -1;
 
 	public static NimniteClient NIMNITE = new NimniteClient();
 
@@ -42,25 +44,28 @@ public class NimbusUtilsClient implements ClientModInitializer {
 
 			client.execute(() -> {
 				HandshakeState state = HandshakeState.getFromState(packet.state());
+				SERVERTYPE = packet.serverType();
 				STATE = state;
 
-				switch (state) {
-					case NIMNITE -> NIMNITE.setEnabled(true);
+				// enable the server type's submodule
+				switch (SERVERTYPE) {
+					case 1 -> NIMNITE.setEnabled(true);
 				}
 
-				LOGGER.info("handshake received: {}", state);
+				LOGGER.info("handshake received: {}, serverType: {}", state, SERVERTYPE);
 			});
 		});
 
 		// send handshake packet on server join
 		ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
-			HandshakePacket handshake = new HandshakePacket(HandshakeState.CONNECTING.getState());
+			HandshakePacket handshake = new HandshakePacket(HandshakeState.CONNECTING.getState(), SERVERTYPE);
 			ClientPlayNetworking.send(handshake);
 		});
 
 		// disable NimbusUtils on disconnect
 		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
 			STATE = HandshakeState.NONE;
+			SERVERTYPE = -1;
 
 			NIMNITE.setEnabled(false);
 		});

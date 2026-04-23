@@ -1,8 +1,6 @@
-package net.playnimbus.nimbusutils.nimnite;
+package net.playnimbus.nimbusutils.modules.nimnite;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.event.player.ItemEvents;
-import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.component.DataComponentTypes;
@@ -10,24 +8,18 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractItemC2SPacket;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.playnimbus.NimbusUtils;
-import net.playnimbus.nimbusutils.ModConfig;
 import net.playnimbus.nimbusutils.NimbusUtilsClient;
 import net.playnimbus.nimbusutils.events.HotbarChangeEvent;
 import net.playnimbus.nimbusutils.events.SwapHandsEvent;
-import net.playnimbus.nimbusutils.mixin.client.MinecraftClientAccessor;
 import net.playnimbus.nimbusutils.mixin.client.SendSequencedPacketAccessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 
-import static net.playnimbus.nimbusutils.nimnite.NimniteKeybinds.*;
+import static net.playnimbus.nimbusutils.modules.nimnite.NimniteKeybinds.*;
 
 public class NimniteClient {
     private final static Logger LOGGER = LoggerFactory.getLogger(NimbusUtils.MOD_ID);

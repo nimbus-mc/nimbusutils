@@ -1,4 +1,4 @@
-package net.playnimbus.nimbusutils.nimnite;
+package net.playnimbus.nimbusutils.modules.nimnite;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
@@ -7,7 +7,7 @@ import net.minecraft.client.util.InputUtil;
 import net.minecraft.util.Identifier;
 import net.playnimbus.NimbusUtils;
 import net.playnimbus.nimbusutils.NimbusUtilsClient;
-import net.playnimbus.nimbusutils.Keybind;
+import net.playnimbus.nimbusutils.networking.Keybind;
 import net.playnimbus.nimbusutils.networking.KeybindPacket;
 import org.lwjgl.glfw.GLFW;
 
@@ -28,7 +28,7 @@ public class NimniteKeybinds {
 	public static final Keybind TILE_TRAP = new Keybind(new KeyBinding(TileType.TRAP.getKey(), InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_B, CATEGORY), NimniteKeybinds::onKeybindPressed);
 
 	private static boolean onKeybindPressed(Keybind k, MinecraftClient client) {
-		if (!NimbusUtilsClient.STATE.isInAGame()) return false;
+		if (!NimbusUtilsClient.STATE.isConnected()) return false;
 
 		var payload = new KeybindPacket(k.keybind().getId());
 		ClientPlayNetworking.send(payload);
