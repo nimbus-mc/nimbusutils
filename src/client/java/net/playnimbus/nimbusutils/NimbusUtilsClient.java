@@ -8,7 +8,6 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.client.MinecraftClient;
-import net.playnimbus.NimbusUtils;
 import net.playnimbus.nimbusutils.modules.nimnite.NimniteClient;
 import net.playnimbus.nimbusutils.modules.nimnite.NimniteKeybinds;
 import net.playnimbus.nimbusutils.networking.HandshakePacket;
@@ -38,7 +37,8 @@ public class NimbusUtilsClient implements ClientModInitializer {
 		PayloadTypeRegistry.playS2C().register(HandshakePacket.ID, HandshakePacket.CODEC);
 		PayloadTypeRegistry.playC2S().register(KeybindPacket.ID, KeybindPacket.CODEC);
 
-		// handle incoming handshake packet
+		// handle incoming handshake packets
+		// note: we have to update this when new server types and modules are implemented
 		ClientPlayNetworking.registerGlobalReceiver(HandshakePacket.ID, (packet, ctx) -> {
 			MinecraftClient client = ctx.client();
 
@@ -49,10 +49,13 @@ public class NimbusUtilsClient implements ClientModInitializer {
 
 				// enable the server type's submodule
 				switch (SERVERTYPE) {
+					case 0 -> LOGGER.warn("todo: hub implementation");
 					case 1 -> NIMNITE.setEnabled(true);
+					default -> {
+						NIMNITE.setEnabled(false);
+						LOGGER.info("Disabled all modules.");
+					}
 				}
-
-				LOGGER.info("handshake received: {}, serverType: {}", state, SERVERTYPE);
 			});
 		});
 

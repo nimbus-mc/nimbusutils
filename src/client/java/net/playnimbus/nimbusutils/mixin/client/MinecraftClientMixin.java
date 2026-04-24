@@ -1,13 +1,11 @@
 package net.playnimbus.nimbusutils.mixin.client;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.playnimbus.NimbusUtils;
+import net.playnimbus.nimbusutils.NimbusUtils;
 import net.playnimbus.nimbusutils.events.SwapHandsEvent;
 import net.playnimbus.nimbusutils.modules.nimnite.NimniteKeybinds;
-import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,9 +26,6 @@ public abstract class MinecraftClientMixin {
 
     @Shadow
     private int itemUseCooldown;
-
-    @Shadow
-    public abstract @Nullable ClientPlayNetworkHandler getNetworkHandler();
 
     @Inject(method = "doAttack", at = @At("HEAD"), cancellable = true)
     private void cancelAttack(CallbackInfoReturnable<Boolean> cir) {

@@ -5,7 +5,7 @@ import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.util.Identifier;
-import net.playnimbus.NimbusUtils;
+import net.playnimbus.nimbusutils.NimbusUtils;
 
 /**
  * The Handshake packet works in both C2S and S2C.

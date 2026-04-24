@@ -5,7 +5,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.util.Identifier;
-import net.playnimbus.NimbusUtils;
+import net.playnimbus.nimbusutils.NimbusUtils;
 import net.playnimbus.nimbusutils.NimbusUtilsClient;
 import net.playnimbus.nimbusutils.networking.Keybind;
 import net.playnimbus.nimbusutils.networking.KeybindPacket;

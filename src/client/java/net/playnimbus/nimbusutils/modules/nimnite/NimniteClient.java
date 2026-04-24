@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractItemC2SPacket;
 import net.minecraft.util.Hand;
-import net.playnimbus.NimbusUtils;
+import net.playnimbus.nimbusutils.NimbusUtils;
 import net.playnimbus.nimbusutils.NimbusUtilsClient;
 import net.playnimbus.nimbusutils.events.HotbarChangeEvent;
 import net.playnimbus.nimbusutils.events.SwapHandsEvent;
