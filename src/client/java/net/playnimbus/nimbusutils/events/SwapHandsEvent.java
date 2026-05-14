@@ -3,8 +3,8 @@ package net.playnimbus.nimbusutils.events;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public interface SwapHandsEvent {
@@ -17,5 +17,5 @@ public interface SwapHandsEvent {
             }
     );
 
-    void onSwapHands(@NotNull ClientPlayerEntity player, ItemStack mainHand, ItemStack offHand);
+    void onSwapHands(@NotNull LocalPlayer player, ItemStack mainHand, ItemStack offHand);
 }

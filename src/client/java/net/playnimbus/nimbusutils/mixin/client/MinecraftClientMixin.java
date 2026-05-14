@@ -1,8 +1,8 @@
 package net.playnimbus.nimbusutils.mixin.client;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.item.ItemStack;
 import net.playnimbus.nimbusutils.NimbusUtils;
 import net.playnimbus.nimbusutils.events.SwapHandsEvent;
 import net.playnimbus.nimbusutils.modules.nimnite.NimniteKeybinds;
@@ -20,21 +20,21 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static net.playnimbus.nimbusutils.NimbusUtilsClient.NIMNITE;
 
-@Mixin(MinecraftClient.class)
+@Mixin(Minecraft.class)
 public abstract class MinecraftClientMixin {
     @Unique private final Logger LOGGER = LoggerFactory.getLogger(NimbusUtils.MOD_ID);
 
     @Shadow
-    private int itemUseCooldown;
+    private int rightClickDelay;
 
-    @Inject(method = "doAttack", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "startAttack", at = @At("HEAD"), cancellable = true)
     private void cancelAttack(CallbackInfoReturnable<Boolean> cir) {
         if (NIMNITE.isEnabled() && NIMNITE.isHoldingGun()) {
             cir.setReturnValue(false);
         }
     }
 
-    @Inject(method = "doItemUse", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "startUseItem", at = @At("HEAD"), cancellable = true)
     private void cancelItemUse(CallbackInfo ci) {
         if (NIMNITE.isEnabled() && NIMNITE.isHoldingGun() && NimniteKeybinds.adsActive.get()) {
             LOGGER.info("cancelled");
@@ -42,32 +42,32 @@ public abstract class MinecraftClientMixin {
         }
     }
 
-    @Inject(method = "handleInputEvents", at = @At("HEAD"))
+    @Inject(method = "handleKeybinds", at = @At("HEAD"))
     private void disableGunOnSwap(CallbackInfo ci) {
-        MinecraftClient client = MinecraftClient.getInstance();
-        if (client.options.swapHandsKey.isPressed()) {
+        Minecraft client = Minecraft.getInstance();
+        if (client.options.keySwapOffhand.isDown()) {
             // The swap hands key was just pressed
-            ClientPlayerEntity player = client.player;
+            LocalPlayer player = client.player;
             if (player != null) {
-                ItemStack mainHand = player.getMainHandStack();
-                ItemStack offHand = player.getOffHandStack();
+                ItemStack mainHand = player.getMainHandItem();
+                ItemStack offHand = player.getOffhandItem();
                 SwapHandsEvent.EVENT.invoker().onSwapHands(player, mainHand, offHand);
             }
         }
     }
 
     @Redirect(
-            method = "handleInputEvents",
+            method = "handleKeybinds",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/MinecraftClient;doItemUse()V"
+                    target = "Lnet/minecraft/client/Minecraft;startUseItem()V"
             )
     )
-    private void redirectDoItemUse(MinecraftClient instance) {
+    private void redirectDoItemUse(Minecraft instance) {
         if (NIMNITE.isEnabled() && NIMNITE.isHoldingGun()) {
-            this.itemUseCooldown = 4;
+            this.rightClickDelay = 4;
             return;
         }
-        ((MinecraftClientAccessor) instance).invokeDoItemUse();
+        ((MinecraftClientAccessor) instance).invokeStartUseItem();
     }
 }

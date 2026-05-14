@@ -6,7 +6,7 @@ import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 
 import static net.playnimbus.nimbusutils.NimbusUtilsClient.CONFIG;
 
@@ -18,23 +18,28 @@ public class ModMenuImplementation implements ModMenuApi {
         return parent -> {
             ConfigBuilder builder = ConfigBuilder.create()
                     .setParentScreen(parent)
-                    .setTitle(Text.translatable("title.nimbusutils.config"))
+                    .setTitle(Component.translatable("title.nimbusutils.config"))
                     ;
             ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
-            builder.getOrCreateCategory(Text.translatable("title.nimbusutils.config"))
-                            .addEntry(entryBuilder.startBooleanToggle(Text.translatable("setting.nimbusutils.enabled"), CONFIG.modEnabled)
+            builder.getOrCreateCategory(Component.translatable("title.nimbusutils.config"))
+                            .addEntry(entryBuilder.startBooleanToggle(Component.translatable("setting.nimbusutils.enabled"), CONFIG.modEnabled)
                                     .setDefaultValue(true)
-                                    .setTooltip(Text.translatable("setting.nimbusutils.enabled.tooltip"))
+                                    .setTooltip(Component.translatable("setting.nimbusutils.enabled.tooltip"))
                                     .setSaveConsumer(newValue -> CONFIG.modEnabled = newValue)
                                     .build())
                     ;
 
-            builder.getOrCreateCategory(Text.translatable("key.category.nimbusutils.nimnite"))
-                    .addEntry(entryBuilder.startBooleanToggle(Text.translatable("setting.nimnite.toggleads"), CONFIG.toggleADS)
+            builder.getOrCreateCategory(Component.translatable("key.category.nimbusutils.nimnite"))
+                    .addEntry(entryBuilder.startBooleanToggle(Component.translatable("setting.nimnite.toggleads"), CONFIG.nimniteToggleAds)
                             .setDefaultValue(false)
-                            .setTooltip(Text.translatable("setting.nimnite.toggleads.tooltip"))
-                            .setSaveConsumer(newValue -> CONFIG.toggleADS = newValue)
+                            .setTooltip(Component.translatable("setting.nimnite.toggleads.tooltip"))
+                            .setSaveConsumer(newValue -> CONFIG.nimniteToggleAds = newValue)
+                            .build())
+                    .addEntry(entryBuilder.startBooleanToggle(Component.translatable("setting.nimnite.lagcomp"), CONFIG.nimniteClientPrediction)
+                            .setDefaultValue(true)
+                            .setTooltip(Component.translatable("setting.nimnite.lagcomp.tooltip"))
+                            .setSaveConsumer(newValue -> CONFIG.nimniteClientPrediction = newValue)
                             .build())
                     ;
 

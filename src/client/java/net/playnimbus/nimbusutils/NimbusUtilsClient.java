@@ -7,7 +7,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 import net.playnimbus.nimbusutils.modules.nimnite.NimniteClient;
 import net.playnimbus.nimbusutils.modules.nimnite.NimniteKeybinds;
 import net.playnimbus.nimbusutils.networking.HandshakePacket;
@@ -33,14 +33,14 @@ public class NimbusUtilsClient implements ClientModInitializer {
 		CONFIG = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
 
 		// register packets
-		PayloadTypeRegistry.playC2S().register(HandshakePacket.ID, HandshakePacket.CODEC);
-		PayloadTypeRegistry.playS2C().register(HandshakePacket.ID, HandshakePacket.CODEC);
-		PayloadTypeRegistry.playC2S().register(KeybindPacket.ID, KeybindPacket.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(HandshakePacket.TYPE, HandshakePacket.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(HandshakePacket.TYPE, HandshakePacket.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(KeybindPacket.TYPE, KeybindPacket.CODEC);
 
 		// handle incoming handshake packets
 		// note: we have to update this when new server types and modules are implemented
-		ClientPlayNetworking.registerGlobalReceiver(HandshakePacket.ID, (packet, ctx) -> {
-			MinecraftClient client = ctx.client();
+		ClientPlayNetworking.registerGlobalReceiver(HandshakePacket.TYPE, (packet, ctx) -> {
+			Minecraft client = ctx.client();
 
 			client.execute(() -> {
 				HandshakeState state = HandshakeState.getFromState(packet.state());

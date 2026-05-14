@@ -1,19 +1,20 @@
 package net.playnimbus.nimbusutils.modules.nimnite;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
-import net.minecraft.network.packet.c2s.play.PlayerInteractItemC2SPacket;
-import net.minecraft.util.Hand;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.protocol.game.ServerboundPlayerActionPacket;
+import net.minecraft.network.protocol.game.ServerboundUseItemPacket;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.playnimbus.nimbusutils.NimbusUtils;
 import net.playnimbus.nimbusutils.NimbusUtilsClient;
 import net.playnimbus.nimbusutils.events.HotbarChangeEvent;
 import net.playnimbus.nimbusutils.events.SwapHandsEvent;
-import net.playnimbus.nimbusutils.mixin.client.SendSequencedPacketAccessor;
+import net.playnimbus.nimbusutils.mixin.client.StartPredictionAccessor;
+import org.jetbrains.annotations.UnknownNullability;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,49 +38,49 @@ public class NimniteClient {
     }
 
     public boolean isItemAGun(ItemStack item) {
-        var customData = item.get(DataComponentTypes.CUSTOM_DATA);
+        var customData = item.get(DataComponents.CUSTOM_DATA);
         if (customData != null) {
-            var nbt = customData.copyNbt();
-            return nbt.getBoolean("fort:item/is_gun", false);
+            var nbt = customData.copyTag();
+            return nbt.getBoolean("fort:item/is_gun").orElse(Boolean.FALSE);
         }
 
         return false;
     }
 
-    private void onHotbarChange(PlayerEntity player, int oldSlot, int newSlot) {
+    private void onHotbarChange(Player player, int oldSlot, int newSlot) {
         if (!isEnabled()) return;
-        ItemStack stack = player.getInventory().getStack(newSlot);
+        ItemStack stack = player.getInventory().getItem(newSlot);
 
         this.setHoldingGun(isItemAGun(stack));
     }
 
-    private void onSwapHands(ClientPlayerEntity player, ItemStack mainHand, ItemStack offHand) {
+    private void onSwapHands(LocalPlayer player, ItemStack mainHand, ItemStack offHand) {
         if (isEnabled()) {
             this.setHoldingGun(isItemAGun(mainHand));
         }
     }
 
-    public void tick(MinecraftClient client) {
+    public void tick(Minecraft client) {
         if (isEnabled() && client.player != null) {
             tickInternal(client);
 
-            if (client.interactionManager != null && holdingGun) {
+            if (client.gameMode != null && holdingGun) {
                 if (shouldShoot) {
-                    ((SendSequencedPacketAccessor) client.interactionManager).invokeSendSequencedPacket(client.world, (sequence -> new PlayerInteractItemC2SPacket(Hand.MAIN_HAND, sequence, client.player.getYaw(), client.player.getPitch())));
+                    ((StartPredictionAccessor) client.gameMode).invokeStartPrediction(client.level, (sequence -> new ServerboundUseItemPacket(InteractionHand.MAIN_HAND, sequence, client.player.getYRot(), client.player.getXRot())));
 //                    LOGGER.info("sent shoot packet");
                 } else if (!lastShouldShoot && adsActive.get()) {
                     if (!isLeftClickHeld()) {
-                        Objects.requireNonNull(client.getNetworkHandler())
-                                .sendPacket(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.RELEASE_USE_ITEM, client.player.getBlockPos(), client.player.getMovementDirection()));
+                        Objects.requireNonNull(client.getConnection())
+                                .send(new ServerboundPlayerActionPacket(ServerboundPlayerActionPacket.Action.RELEASE_USE_ITEM, client.player.getOnPos(), client.player.getMotionDirection()));
                     }
                 }
             }
         }
     }
 
-    private void tickInternal(MinecraftClient client) {
-        boolean isRightHeld = client.options.useKey.isPressed();
-        boolean isLeftHeld = client.options.attackKey.isPressed();
+    private void tickInternal(@UnknownNullability Minecraft client) {
+        boolean isRightHeld = client.options.keyUse.isDown();
+        boolean isLeftHeld = client.options.keyAttack.isDown();
         rightClickHeld.set(isRightHeld);
         leftClickHeld.set(isLeftHeld);
 

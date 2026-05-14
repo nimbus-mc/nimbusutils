@@ -3,6 +3,8 @@
   "key.category.nimbusutils.nimnite": "Nimnite",
   "setting.nimnite.toggleads": "Toggle ADS",
   "setting.nimnite.toggleads.tooltip": "Default: Hold ADS",
+  "setting.nimnite.lagcomp": "Client Prediction",
+  "setting.nimnite.lagcomp.tooltip": "Compensates for lag via client prediction",
   "setting.nimbusutils.enabled": "Enabled",
   "setting.nimbusutils.enabled.tooltip": "Use NimbusUtils features?",
   "key.nimnite.tile_wall": "Wall",

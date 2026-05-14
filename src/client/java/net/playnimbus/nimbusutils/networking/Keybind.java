@@ -1,31 +1,31 @@
 package net.playnimbus.nimbusutils.networking;
 
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.KeyBinding;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
 
-public record Keybind(KeyBinding keybind, BiFunction<Keybind, MinecraftClient, Boolean> onPressed) {
+public record Keybind(KeyMapping keybind, BiFunction<Keybind, Minecraft, Boolean> onPressed) {
 	public static final Map<String, Keybind> REGISTRY = new HashMap<>();
 
 	public void register() {
-		KeyBindingHelper.registerKeyBinding(keybind());
-		REGISTRY.put(keybind.getId(), this);
+		KeyMappingHelper.registerKeyMapping(keybind());
+		REGISTRY.put(keybind.getName(), this);
 	}
 
 	/**
 	 * this gets ran at the end of the client's tick
 	 */
-	public void tick(MinecraftClient client) {
-		while (keybind != null && keybind.wasPressed()) {
+	public void tick(Minecraft client) {
+		while (keybind != null && keybind.consumeClick()) {
 			onPressed().apply(this, client);
 		}
 	}
 
-	public static void tickAll(MinecraftClient client) {
+	public static void tickAll(Minecraft client) {
 		REGISTRY.forEach((i, k) -> k.tick(client));
 	}
 }

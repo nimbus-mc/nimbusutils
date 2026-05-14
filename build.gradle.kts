@@ -1,5 +1,5 @@
 plugins {
-	id("net.fabricmc.fabric-loom-remap")
+	id("net.fabricmc.fabric-loom")
 	`maven-publish`
 }
 
@@ -29,15 +29,12 @@ loom {
 dependencies {
 	// To change the versions see the gradle.properties file
 	minecraft("com.mojang:minecraft:${providers.gradleProperty("minecraft_version").get()}")
-	mappings("net.fabricmc:yarn:${providers.gradleProperty("yarn_mappings").get()}:v2")
-	modImplementation("net.fabricmc:fabric-loader:${providers.gradleProperty("loader_version").get()}")
-
-	// Fabric API. This is technically optional, but you probably want it anyway.
-	modImplementation("net.fabricmc.fabric-api:fabric-api:${providers.gradleProperty("fabric_api_version").get()}")
+	implementation("net.fabricmc:fabric-loader:${providers.gradleProperty("loader_version").get()}")
+	implementation("net.fabricmc.fabric-api:fabric-api:${providers.gradleProperty("fabric_api_version").get()}")
 
 	// Mod Menu. TODO: When updating to 26.1 switch to implementation.
-	modApi("com.terraformersmc:modmenu:${providers.gradleProperty("modmenu_version").get()}")
-	modApi("me.shedaniel.cloth:cloth-config-fabric:${providers.gradleProperty("clothconfig_version").get()}") {
+	implementation("com.terraformersmc:modmenu:${providers.gradleProperty("modmenu_version").get()}")
+	api("me.shedaniel.cloth:cloth-config-fabric:${providers.gradleProperty("clothconfig_version").get()}") {
 		exclude(group = "net.fabricmc.fabric-api")
 	}
 }
@@ -51,7 +48,7 @@ tasks.processResources {
 }
 
 tasks.withType<JavaCompile>().configureEach {
-	options.release = 21
+	options.release = 25
 }
 
 java {
@@ -60,8 +57,8 @@ java {
 	// If you remove this line, sources will not be generated.
 	withSourcesJar()
 
-	sourceCompatibility = JavaVersion.VERSION_21
-	targetCompatibility = JavaVersion.VERSION_21
+	sourceCompatibility = JavaVersion.VERSION_25
+	targetCompatibility = JavaVersion.VERSION_25
 }
 
 tasks.jar {

@@ -2,7 +2,7 @@ package net.playnimbus.nimbusutils.events;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 
 public interface HotbarChangeEvent {
     Event<HotbarChangeEvent> EVENT = EventFactory.createArrayBacked(
@@ -14,5 +14,5 @@ public interface HotbarChangeEvent {
             }
     );
 
-    void onHotbarChange(PlayerEntity player, int oldSlot, int newSlot);
+    void onHotbarChange(Player player, int oldSlot, int newSlot);
 }

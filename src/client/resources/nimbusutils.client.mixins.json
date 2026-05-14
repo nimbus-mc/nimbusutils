@@ -3,13 +3,13 @@
 	"package": "net.playnimbus.nimbusutils.mixin.client",
 	"compatibilityLevel": "JAVA_21",
 	"client": [
-		"ClientPlayerEntityMixin",
+		"BlockVanillaShootingMixin",
 		"HotbarChangeMixin",
 		"MinecraftClientAccessor",
 		"MinecraftClientMixin",
 		"NimniteAimingMixin",
-		"SendSequencedPacketAccessor",
-		"PlayerInventoryMixin"
+		"StartPredictionAccessor",
+		"NimniteHoldingGunMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
