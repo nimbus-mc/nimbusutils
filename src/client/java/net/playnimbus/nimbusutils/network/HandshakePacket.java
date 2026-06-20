@@ -15,7 +15,7 @@ import net.playnimbus.nimbusutils.NimbusUtils;
  * @param state byte representation of {@link HandshakeState}
  * @param serverType byte representation of server's ServerType
  */
-public record HandshakePacket(byte state, byte serverType) implements CustomPacketPayload {
+public record HandshakePacket(byte state, byte serverType) implements CustomPacketPayload, Packet {
 	public static final Identifier HANDSHAKE_PAYLOAD_ID = Identifier.fromNamespaceAndPath(NimbusUtils.MOD_ID, "handshake");
 	public static final CustomPacketPayload.Type<HandshakePacket> TYPE = new CustomPacketPayload.Type<>(HANDSHAKE_PAYLOAD_ID);
 	public static final StreamCodec<RegistryFriendlyByteBuf, HandshakePacket> CODEC = StreamCodec.composite(
@@ -27,5 +27,10 @@ public record HandshakePacket(byte state, byte serverType) implements CustomPack
 	@Override
 	public Type<? extends CustomPacketPayload> type() {
 		return TYPE;
+	}
+
+	@Override
+	public <T> StreamCodec<? super RegistryFriendlyByteBuf, T> codec() {
+		return (StreamCodec<? super RegistryFriendlyByteBuf, T>) CODEC;
 	}
 }

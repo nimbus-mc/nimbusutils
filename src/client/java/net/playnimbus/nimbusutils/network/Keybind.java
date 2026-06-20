@@ -26,6 +26,6 @@ public record Keybind(KeyMapping keybind, BiFunction<Keybind, Minecraft, Boolean
 	}
 
 	public static void tickAll(Minecraft client) {
-		REGISTRY.forEach((i, k) -> k.tick(client));
+		REGISTRY.forEach((_, k) -> k.tick(client));
 	}
 }

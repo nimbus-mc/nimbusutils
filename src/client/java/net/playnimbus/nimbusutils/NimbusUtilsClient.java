@@ -10,10 +10,7 @@ import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.client.Minecraft;
 import net.playnimbus.nimbusutils.modules.nimnite.NimniteClient;
 import net.playnimbus.nimbusutils.modules.nimnite.NimniteKeybinds;
-import net.playnimbus.nimbusutils.network.HandshakePacket;
-import net.playnimbus.nimbusutils.network.HandshakeState;
-import net.playnimbus.nimbusutils.network.Keybind;
-import net.playnimbus.nimbusutils.network.KeybindPacket;
+import net.playnimbus.nimbusutils.network.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,9 +30,7 @@ public class NimbusUtilsClient implements ClientModInitializer {
 		CONFIG = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
 
 		// register packets
-		PayloadTypeRegistry.serverboundPlay().register(HandshakePacket.TYPE, HandshakePacket.CODEC);
-		PayloadTypeRegistry.clientboundPlay().register(HandshakePacket.TYPE, HandshakePacket.CODEC);
-		PayloadTypeRegistry.serverboundPlay().register(KeybindPacket.TYPE, KeybindPacket.CODEC);
+		PacketRegistry.registerAll();
 
 		// handle incoming handshake packets
 		// note: we have to update this when new server types and modules are implemented

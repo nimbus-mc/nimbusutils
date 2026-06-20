@@ -7,7 +7,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import net.playnimbus.nimbusutils.NimbusUtils;
 
-public record KeybindPacket(String key) implements CustomPacketPayload {
+public record KeybindPacket(String key) implements CustomPacketPayload, Packet {
 	public static final Identifier KEYBIND_PAYLOAD_ID = Identifier.fromNamespaceAndPath(NimbusUtils.MOD_ID, "keybind");
 	public static final CustomPacketPayload.Type<KeybindPacket> TYPE = new CustomPacketPayload.Type<>(KEYBIND_PAYLOAD_ID);
 	public static final StreamCodec<RegistryFriendlyByteBuf, KeybindPacket> CODEC = StreamCodec.composite(
@@ -18,5 +18,10 @@ public record KeybindPacket(String key) implements CustomPacketPayload {
 	@Override
 	public Type<? extends CustomPacketPayload> type() {
 		return TYPE;
+	}
+
+	@Override
+	public <T> StreamCodec<? super RegistryFriendlyByteBuf, T> codec() {
+		return (StreamCodec<? super RegistryFriendlyByteBuf, T>) CODEC;
 	}
 }
