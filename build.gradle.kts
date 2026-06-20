@@ -32,7 +32,7 @@ dependencies {
 	implementation("net.fabricmc:fabric-loader:${providers.gradleProperty("loader_version").get()}")
 	implementation("net.fabricmc.fabric-api:fabric-api:${providers.gradleProperty("fabric_api_version").get()}")
 
-	// Mod Menu. TODO: When updating to 26.1 switch to implementation.
+	// Mod Menu
 	implementation("com.terraformersmc:modmenu:${providers.gradleProperty("modmenu_version").get()}")
 	api("me.shedaniel.cloth:cloth-config-fabric:${providers.gradleProperty("clothconfig_version").get()}") {
 		exclude(group = "net.fabricmc.fabric-api")
