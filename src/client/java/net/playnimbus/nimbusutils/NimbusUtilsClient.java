@@ -10,10 +10,10 @@ import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.client.Minecraft;
 import net.playnimbus.nimbusutils.modules.nimnite.NimniteClient;
 import net.playnimbus.nimbusutils.modules.nimnite.NimniteKeybinds;
-import net.playnimbus.nimbusutils.networking.HandshakePacket;
-import net.playnimbus.nimbusutils.networking.HandshakeState;
-import net.playnimbus.nimbusutils.networking.Keybind;
-import net.playnimbus.nimbusutils.networking.KeybindPacket;
+import net.playnimbus.nimbusutils.network.HandshakePacket;
+import net.playnimbus.nimbusutils.network.HandshakeState;
+import net.playnimbus.nimbusutils.network.Keybind;
+import net.playnimbus.nimbusutils.network.KeybindPacket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

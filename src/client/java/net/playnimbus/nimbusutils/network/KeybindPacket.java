@@ -1,4 +1,4 @@
-package net.playnimbus.nimbusutils.networking;
+package net.playnimbus.nimbusutils.network;
 
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;

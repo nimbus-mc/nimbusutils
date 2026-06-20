@@ -1,4 +1,4 @@
-package net.playnimbus.nimbusutils.networking;
+package net.playnimbus.nimbusutils.network;
 
 public enum HandshakeState {
 	NONE((byte) 0),

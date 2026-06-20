@@ -1,4 +1,4 @@
-package net.playnimbus.nimbusutils.networking;
+package net.playnimbus.nimbusutils.network;
 
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.minecraft.client.KeyMapping;

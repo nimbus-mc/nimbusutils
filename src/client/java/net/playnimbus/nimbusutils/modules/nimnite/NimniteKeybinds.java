@@ -7,8 +7,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;
 import net.playnimbus.nimbusutils.NimbusUtils;
 import net.playnimbus.nimbusutils.NimbusUtilsClient;
-import net.playnimbus.nimbusutils.networking.Keybind;
-import net.playnimbus.nimbusutils.networking.KeybindPacket;
+import net.playnimbus.nimbusutils.network.Keybind;
+import net.playnimbus.nimbusutils.network.KeybindPacket;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.concurrent.atomic.AtomicBoolean;
