@@ -29,8 +29,9 @@ public record HandshakePacket(byte state, byte serverType) implements CustomPack
 		return TYPE;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public <T> StreamCodec<? super RegistryFriendlyByteBuf, T> codec() {
-		return (StreamCodec<? super RegistryFriendlyByteBuf, T>) CODEC;
+	public StreamCodec<RegistryFriendlyByteBuf, HandshakePacket> codec() {
+		return CODEC;
 	}
 }

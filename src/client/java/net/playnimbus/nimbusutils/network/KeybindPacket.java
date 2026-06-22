@@ -20,8 +20,9 @@ public record KeybindPacket(String key) implements CustomPacketPayload, Packet {
 		return TYPE;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public <T> StreamCodec<? super RegistryFriendlyByteBuf, T> codec() {
-		return (StreamCodec<? super RegistryFriendlyByteBuf, T>) CODEC;
+	public StreamCodec<RegistryFriendlyByteBuf, KeybindPacket> codec() {
+		return CODEC;
 	}
 }

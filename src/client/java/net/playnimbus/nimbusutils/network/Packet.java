@@ -23,5 +23,5 @@ public interface Packet {
     }
 
     CustomPacketPayload.Type<? extends CustomPacketPayload> type();
-    <T> StreamCodec<? super RegistryFriendlyByteBuf, T> codec();
+    <T> StreamCodec<RegistryFriendlyByteBuf, T> codec();
 }
