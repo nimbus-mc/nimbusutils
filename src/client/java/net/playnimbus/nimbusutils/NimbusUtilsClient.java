@@ -31,6 +31,7 @@ public class NimbusUtilsClient implements ClientModInitializer {
 
 		// register packets
 		PacketRegistry.registerAll();
+		NIMNITE.registerHud();
 
 		// handle incoming handshake packets
 		// note: we have to update this when new server types and modules are implemented
