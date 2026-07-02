@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static net.playnimbus.nimbusutils.NimbusUtilsClient.NIMNITE;
 
-@Mixin(Player.class)
+@Mixin(LocalPlayer.class)
 public class NimniteHoldingGunMixin {
     @Inject(method = "tick", at = @At("HEAD"))
     private void checkHeldGun(CallbackInfo ci) {
