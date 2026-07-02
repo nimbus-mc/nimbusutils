@@ -1,6 +1,7 @@
 package net.playnimbus.nimbusutils.network;
 
-import net.playnimbus.nimbusutils.network.nimnite.NimniteDamageInfoPacket;
+import net.minecraft.network.chat.Component;
+import net.playnimbus.nimbusutils.network.nimnite.NimniteDamageIndicatorPacket;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,7 +12,7 @@ public final class PacketRegistry {
     public static void registerAll() {
         registry.add(new HandshakePacket((byte) 0, (byte) 0));
         registry.add(new KeybindPacket(""));
-        registry.add(new NimniteDamageInfoPacket(0, 0));
+        registry.add(new NimniteDamageIndicatorPacket(Component.empty()));
 
         // register all entries
         for (var entry : registry) {
@@ -22,6 +23,6 @@ public final class PacketRegistry {
                 entry.registerS2C();
         }
 
-        registry = null;
+        registry.clear();
     }
 }
